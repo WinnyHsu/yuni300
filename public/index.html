@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>宇倪三百天</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#F7F3EE;
+  --ink:#1A1A1A;
+  --c-yellow:#F5D84A;
+  --c-pink:#F4A7B9;
+  --c-blue:#7BB8F0;
+  --c-green:#7ECBA1;
+  --c-red:#F4735A;
+  --c-lilac:#C5B3F0;
+  --c-peach:#F5C08A;
+  --card:#FFFFFF;
+  --r:22px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg)}
+body{
+  font-family:'Nunito','Noto Sans TC',sans-serif;
+  color:var(--ink);-webkit-font-smoothing:antialiased;
+  overscroll-behavior:none;
+}
+
+.shell{max-width:430px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}
+.status-spacer{height:env(safe-area-inset-top,18px)}
+.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 18px 110px;-webkit-overflow-scrolling:touch}
+.scroll-area::-webkit-scrollbar{display:none}
+
+/* ── TOP BAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 18px 2px;background:var(--bg);position:sticky;top:0;z-index:20}
+.app-name{
+  font-size:20px;font-weight:900;color:var(--ink);letter-spacing:-1px;
+  background:var(--c-yellow);
+  padding:3px 10px 4px;
+  border-radius:8px;
+  border:2.5px solid var(--ink);
+  display:inline-block;
+  /* hand-drawn slight skew */
+  transform:rotate(-1deg);
+  box-shadow:3px 3px 0 var(--ink);
+}
+.icon-btn{
+  width:38px;height:38px;background:var(--card);
+  border:2.5px solid var(--ink);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  box-shadow:3px 3px 0 var(--ink);
+  transition:transform .12s,box-shadow .12s;
+}
+.icon-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.icon-btn svg{width:18px;height:18px;stroke:var(--ink);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── HERO QUOTA CARD ── */
+.hero-card{
+  margin:16px 0 14px;
+  background:var(--c-yellow);
+  border:3px solid var(--ink);
+  border-radius:28px;
+  padding:26px 22px 20px;
+  position:relative;overflow:hidden;
+  box-shadow:6px 6px 0 var(--ink);
+}
+
+/* Hand-drawn wavy doodle elements inside card */
+.hero-doodle{position:absolute;opacity:.18;pointer-events:none}
+.hero-doodle svg{stroke:var(--ink);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+.hero-label{
+  font-size:11px;font-weight:900;color:var(--ink);
+  letter-spacing:1.5px;text-transform:uppercase;
+  opacity:.6;margin-bottom:4px;
+}
+.hero-num{
+  font-size:72px;font-weight:900;color:var(--ink);
+  line-height:1;display:flex;align-items:baseline;gap:6px;
+  letter-spacing:-3px;
+}
+.hero-num sub{font-size:18px;font-weight:800;letter-spacing:0;opacity:.65}
+.hero-tagline{font-size:13px;font-weight:700;color:var(--ink);opacity:.6;margin-top:5px;font-style:italic}
+.hero-chips{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+
+/* chips = small hand-drawn badges */
+.chip{
+  display:inline-flex;align-items:center;gap:5px;
+  border-radius:100px;padding:5px 13px;
+  font-size:11px;font-weight:800;
+  border:2px solid var(--ink);
+  box-shadow:2px 2px 0 var(--ink);
+}
+.chip svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;flex-shrink:0}
+.chip-streak{background:#fff;color:var(--ink)}
+.chip-dl{background:var(--c-pink);color:var(--ink)}
+.chip-ok{background:var(--c-green);color:var(--ink)}
+.chip-warn{background:var(--c-red);color:#fff}
+.chip-none{background:rgba(255,255,255,.6);color:var(--ink)}
+
+/* ── HAND-DRAWN CARD STYLE ── */
+.hcard{
+  background:var(--card);
+  border:3px solid var(--ink);
+  border-radius:var(--r);
+  box-shadow:5px 5px 0 var(--ink);
+  position:relative;overflow:hidden;
+}
+/* wavy top-left corner accent */
+.hcard::before{
+  content:'';position:absolute;
+  top:-1px;left:-1px;
+  width:60px;height:60px;
+  border-radius:0 0 100% 0;
+  background:var(--accent-col,var(--c-blue));
+  opacity:.18;
+}
+
+/* ── STAT ROW ── */
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.stat-card{
+  background:var(--card);
+  border:3px solid var(--ink);
+  border-radius:18px;
+  padding:16px 14px;
+  box-shadow:4px 4px 0 var(--ink);
+  position:relative;overflow:hidden;
+}
+.stat-card::after{
+  content:'';position:absolute;
+  right:-8px;bottom:-8px;width:40px;height:40px;
+  border-radius:50%;
+  background:var(--dot-col,var(--c-yellow));
+  opacity:.4;
+}
+.sc-label{font-size:11px;font-weight:800;color:var(--ink);opacity:.5;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.sc-val{font-size:32px;font-weight:900;color:var(--ink);line-height:1;letter-spacing:-1px}
+.sc-unit{font-size:14px;font-weight:700;opacity:.55;margin-left:2px}
+
+/* ── SECTION TITLE ── */
+.sec-title{
+  font-size:22px;font-weight:900;color:var(--ink);
+  margin:20px 0 12px;letter-spacing:-1px;
+  display:flex;align-items:center;gap:8px;
+}
+.sec-title::after{
+  content:'';flex:1;height:3px;
+  background:repeating-linear-gradient(90deg,var(--ink) 0,var(--ink) 6px,transparent 6px,transparent 12px);
+  border-radius:2px;opacity:.2;
+}
+
+/* ── RECORD CARD ── */
+.record-card{
+  background:var(--c-blue);
+  border:3px solid var(--ink);
+  border-radius:var(--r);
+  padding:20px;
+  box-shadow:5px 5px 0 var(--ink);
+  margin-bottom:14px;
+  position:relative;overflow:hidden;
+}
+.record-card::after{
+  content:'';position:absolute;
+  right:-20px;top:-20px;width:80px;height:80px;
+  border-radius:50%;background:rgba(255,255,255,.2);
+}
+.rc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.rc-date{font-size:13px;font-weight:800;color:var(--ink);opacity:.7}
+.dl-badge{
+  font-size:11px;font-weight:900;
+  background:var(--c-pink);color:var(--ink);
+  border-radius:100px;padding:4px 12px;
+  border:2px solid var(--ink);
+  box-shadow:2px 2px 0 var(--ink);
+}
+
+.time-row{display:flex;gap:10px;align-items:center}
+input[type=time]{
+  flex:1;
+  font-family:'Nunito','Noto Sans TC',sans-serif;
+  font-size:38px;font-weight:900;color:var(--ink);
+  background:rgba(255,255,255,.85);
+  border:3px solid var(--ink);
+  border-radius:16px;
+  padding:10px 14px;outline:none;
+  text-align:center;
+  box-shadow:3px 3px 0 var(--ink);
+  letter-spacing:-1px;
+  -webkit-appearance:none;
+  transition:background .15s;
+}
+input[type=time]:focus{background:#fff}
+
+.btn-log{
+  background:var(--ink);color:#fff;
+  border:3px solid var(--ink);border-radius:16px;
+  padding:12px 18px;
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:900;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
+  box-shadow:3px 3px 0 rgba(0,0,0,.3);
+  transition:transform .12s,box-shadow .12s;
+}
+.btn-log:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(0,0,0,.3)}
+
+/* Preview */
+.preview-track{margin-top:12px;height:9px;border-radius:100px;background:rgba(0,0,0,.25);overflow:hidden;display:none;border:2px solid var(--ink)}
+.preview-fill{height:100%;border-radius:100px;transition:width .3s,background .3s;min-width:8px}
+.preview-txt{margin-top:7px;font-size:12px;font-weight:800;display:none;color:var(--ink)}
+
+/* Feedback */
+.feedback{
+  margin-top:12px;border-radius:14px;padding:13px 15px;
+  font-size:13px;font-weight:800;line-height:1.5;
+  display:none;
+  border:2.5px solid var(--ink);
+  box-shadow:3px 3px 0 var(--ink);
+  animation:popUp .2s ease;
+}
+@keyframes popUp{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.feedback.ok{background:var(--c-green);display:block}
+.feedback.quota{background:var(--c-yellow);display:block}
+.feedback.late{background:var(--c-red);color:#fff;display:block}
+
+/* ── HISTORY ── */
+.hist-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.hi{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;
+  border:3px solid var(--ink);border-radius:18px;
+  box-shadow:4px 4px 0 var(--ink);
+  background:var(--card);
+  animation:slideR .22s ease both;
+  position:relative;overflow:hidden;
+}
+@keyframes slideR{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.hi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--hi-col,var(--c-green))}
+.hi-dot{
+  width:38px;height:38px;border-radius:50%;
+  border:2.5px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  background:var(--hi-col,var(--c-green));
+}
+.hi-dot svg{width:16px;height:16px;fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:round}
+.hi-body{flex:1;min-width:0}
+.hi-date{font-size:11px;font-weight:800;opacity:.55;letter-spacing:.3px}
+.hi-time{font-size:20px;font-weight:900;color:var(--ink);line-height:1.2;letter-spacing:-1px}
+.hi-right{text-align:right;font-size:13px;font-weight:900;flex-shrink:0}
+.empty{text-align:center;padding:36px 0;opacity:.45;font-size:14px;font-weight:800}
+.empty svg{width:44px;height:44px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;display:block;margin:0 auto 10px}
+
+/* ── SETTINGS ── */
+.music-block{
+  background:var(--c-lilac);
+  border:3px solid var(--ink);border-radius:var(--r);
+  padding:18px;box-shadow:5px 5px 0 var(--ink);margin-bottom:16px;
+  position:relative;overflow:hidden;
+}
+.music-block::after{content:'';position:absolute;right:-15px;bottom:-15px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.3)}
+.music-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.disc{
+  width:46px;height:46px;border-radius:50%;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  border:3px solid var(--ink);
+  box-shadow:3px 3px 0 rgba(0,0,0,.25);
+}
+.disc.spin{animation:spin 2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.disc svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round}
+.music-meta .mn{font-size:14px;font-weight:900;color:var(--ink)}
+.music-meta .ms{font-size:11px;font-weight:700;opacity:.6}
+.music-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.mbtn{
+  background:#fff;border:2.5px solid var(--ink);border-radius:100px;
+  padding:7px 15px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:900;
+  color:var(--ink);cursor:pointer;
+  box-shadow:2px 2px 0 var(--ink);
+  display:inline-flex;align-items:center;gap:6px;
+  transition:transform .1s,box-shadow .1s;
+}
+.mbtn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.mbtn.on{background:var(--ink);color:#fff}
+.mbtn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+#yt-frame{width:100%;height:0;border:none;border-radius:12px;transition:height .3s}
+#yt-frame.open{height:180px;margin-top:4px}
+
+.field{margin-bottom:16px}
+.field label{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:900;color:var(--ink);
+  margin-bottom:8px;letter-spacing:.5px;text-transform:uppercase;
+}
+.field label svg{width:15px;height:15px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;flex-shrink:0}
+.field input[type=time],
+.field input[type=text]{
+  width:100%;background:var(--card);
+  border:3px solid var(--ink);border-radius:14px;
+  padding:12px 14px;font-family:'Nunito','Noto Sans TC',sans-serif;
+  font-size:14px;font-weight:800;color:var(--ink);outline:none;
+  box-shadow:3px 3px 0 var(--ink);
+  transition:box-shadow .12s;
+}
+.field input:focus{box-shadow:1px 1px 0 var(--ink)}
+.field .hint{font-size:11px;font-weight:700;opacity:.5;margin-top:6px;line-height:1.7}
+
+.btn-save{
+  width:100%;background:var(--ink);color:#fff;
+  border:3px solid var(--ink);border-radius:16px;
+  padding:15px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;
+  cursor:pointer;letter-spacing:-.3px;
+  box-shadow:5px 5px 0 rgba(0,0,0,.25);
+  transition:transform .12s,box-shadow .12s;
+}
+.btn-save:active{transform:translate(3px,3px);box-shadow:2px 2px 0 rgba(0,0,0,.25)}
+
+.notion-note{
+  margin-top:16px;
+  background:var(--card);border:3px solid var(--ink);border-radius:16px;
+  padding:14px;font-size:11px;font-weight:700;line-height:1.9;
+  box-shadow:4px 4px 0 var(--ink);
+}
+.notion-note code{background:var(--bg);border-radius:5px;padding:2px 6px;font-size:10.5px;border:1.5px solid var(--ink)}
+
+/* ── BOTTOM NAV ── */
+.bnav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:var(--card);
+  border-top:3px solid var(--ink);
+  display:flex;
+  padding:8px 16px calc(env(safe-area-inset-bottom,0px) + 8px);
+  z-index:50;
+  gap:4px;
+}
+.nb{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  background:none;border:none;cursor:pointer;padding:5px 0;
+  font-family:'Nunito',sans-serif;
+  border-radius:12px;
+  transition:background .12s;
+}
+.nb:hover{background:var(--bg)}
+.nb.active{background:var(--ink)}
+.nb-ico svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.nb.active .nb-ico svg{stroke:#fff}
+.nb-lbl{font-size:10px;font-weight:900;color:var(--ink);letter-spacing:.3px}
+.nb.active .nb-lbl{color:#fff}
+
+/* ── SECTIONS ── */
+.sec{display:none}
+.sec.on{display:block;animation:fadeUp .22s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:88px;left:50%;
+  transform:translateX(-50%) translateY(10px);
+  background:var(--ink);color:#fff;
+  padding:10px 22px;border-radius:100px;
+  border:2.5px solid var(--ink);
+  font-size:13px;font-weight:800;
+  opacity:0;transition:all .25s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;z-index:200;white-space:nowrap;
+  box-shadow:3px 3px 0 rgba(0,0,0,.2);
+}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── DECORATIVE DOODLE SVGs ── */
+.doodle-corner{position:absolute;pointer-events:none;opacity:.13}
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<div class="shell">
+<div class="status-spacer"></div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="app-name">宇倪三百天</div>
+  <button class="icon-btn" onclick="switchTab('settings',qs('[data-sec=settings]'))" title="設定">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+  </button>
+</div>
+
+<div class="scroll-area" id="sa">
+
+<!-- ══ HOME ══ -->
+<div class="sec on" id="sec-home">
+
+  <!-- Hero quota card with hand-drawn doodles -->
+  <div class="hero-card" id="heroCard">
+    <!-- Doodle: wavy lines top right -->
+    <svg class="doodle-corner" style="top:10px;right:16px;width:90px;height:60px" viewBox="0 0 90 60">
+      <path d="M5 15 Q20 5 35 15 Q50 25 65 15 Q80 5 90 10" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M5 30 Q20 20 35 30 Q50 40 65 30 Q80 20 90 25" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M5 45 Q20 35 35 45 Q50 55 65 45 Q80 35 90 40" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+    <!-- Doodle: small star bottom left -->
+    <svg class="doodle-corner" style="bottom:14px;right:20px;width:36px;height:36px;opacity:.1" viewBox="0 0 36 36">
+      <path d="M18 2 L20.5 13.5 L32 11 L23 19 L29 30 L18 24 L7 30 L13 19 L4 11 L15.5 13.5 Z" stroke="#1A1A1A" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <div class="hero-label">可用 Quota</div>
+    <div class="hero-num"><span id="heroQ">—</span><sub>分鐘</sub></div>
+    <div class="hero-tagline" id="heroTag">載入中...</div>
+    <div class="hero-chips">
+      <div class="chip chip-streak" id="chipStreak">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>— 天連續</span>
+      </div>
+      <div class="chip chip-dl" id="chipDL">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>截止 —</span>
+      </div>
+      <div class="chip chip-none" id="chipToday">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span id="chipTodayTxt">今日未記錄</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card" style="--dot-col:var(--c-green)">
+      <div class="sc-label">準時次數</div>
+      <div class="sc-val" id="stOnTime">—<span class="sc-unit">次</span></div>
+    </div>
+    <div class="stat-card" style="--dot-col:var(--c-pink)">
+      <div class="sc-label">準時率</div>
+      <div class="sc-val" id="stRate">—<span class="sc-unit">%</span></div>
+    </div>
+  </div>
+
+  <div class="sec-title">記錄今天</div>
+  <div class="record-card">
+    <!-- Doodle inside record card -->
+    <svg style="position:absolute;bottom:12px;right:16px;opacity:.12;pointer-events:none" width="55" height="40" viewBox="0 0 55 40">
+      <path d="M3 20 Q14 6 25 20 Q36 34 47 20 Q51 14 54 18" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="8" cy="34" r="3" stroke="#1A1A1A" stroke-width="2" fill="none"/>
+      <circle cx="46" cy="8" r="2" stroke="#1A1A1A" stroke-width="2" fill="none"/>
+    </svg>
+
+    <div class="rc-top">
+      <span class="rc-date" id="rcDate">今天</span>
+      <span class="dl-badge" id="rcDL">截止 23:00</span>
+    </div>
+    <div class="time-row">
+      <input type="time" id="tInput" oninput="onTC(this.value)"/>
+      <button class="btn-log" onclick="submitRecord()">登記</button>
+    </div>
+    <div class="preview-track" id="pvTrack"><div class="preview-fill" id="pvFill"></div></div>
+    <div class="preview-txt" id="pvTxt"></div>
+    <div class="feedback" id="fb"></div>
+  </div>
+
+</div>
+
+<!-- ══ HISTORY ══ -->
+<div class="sec" id="sec-history">
+  <div class="sec-title">回家記錄</div>
+  <div class="hist-list" id="histList"></div>
+</div>
+
+<!-- ══ SETTINGS ══ -->
+<div class="sec" id="sec-settings">
+  <div class="sec-title">設定</div>
+
+  <!-- Music -->
+  <div class="music-block">
+    <!-- Doodle -->
+    <svg style="position:absolute;top:10px;right:14px;opacity:.15;pointer-events:none" width="60" height="45" viewBox="0 0 60 45">
+      <path d="M4 22 Q15 8 26 22 Q37 36 48 22 Q52 16 58 20" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M4 32 Q10 26 16 32 Q22 38 28 32" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="music-header">
+      <div class="disc" id="disc">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <div class="music-meta">
+        <div class="mn" id="mnTitle">點播放開始</div>
+        <div class="ms">YouTube 背景音樂</div>
+      </div>
+    </div>
+    <div class="music-btns">
+      <button class="mbtn" id="btnPlay" onclick="togglePlay()">
+        <svg id="playIco" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>播放
+      </button>
+      <button class="mbtn" id="btnShow" onclick="toggleYT()">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>顯示
+      </button>
+    </div>
+    <iframe id="yt-frame" src="" allow="autoplay;encrypted-media" allowfullscreen></iframe>
+  </div>
+
+  <div class="field">
+    <label>
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>截止時間
+    </label>
+    <input type="time" id="cfgDL"/>
+    <div class="hint">超時回家會自動從 quota 扣除（上限 60 分鐘／天）</div>
+  </div>
+
+  <div class="field">
+    <label>
+      <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>YouTube 音樂網址
+    </label>
+    <input type="text" id="cfgYt" placeholder="https://www.youtube.com/watch?v=..." oninput="onYtInput(this.value)"/>
+    <div class="hint">貼上任何 YouTube 連結即可</div>
+  </div>
+
+  <button class="btn-save" onclick="saveSettings()">儲存設定</button>
+
+  <div class="notion-note">
+    <strong>Notion 環境變數</strong>（在 Zeabur Variables 填入）<br>
+    <code>NOTION_TOKEN</code> Integration Token<br>
+    <code>NOTION_RECORDS_DB_ID</code> 回家記錄資料庫 ID<br>
+    <code>NOTION_SETTINGS_DB_ID</code> 設定資料庫 ID（可選）<br>
+    <code>DEADLINE</code> 預設截止時間（例：23:00）
+  </div>
+</div>
+
+</div><!-- /scroll-area -->
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="nb active" data-sec="home" onclick="switchTab('home',this)">
+    <div class="nb-ico"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <div class="nb-lbl">主頁</div>
+  </button>
+  <button class="nb" data-sec="history" onclick="switchTab('history',this)">
+    <div class="nb-ico"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
+    <div class="nb-lbl">記錄</div>
+  </button>
+  <button class="nb" data-sec="settings" onclick="switchTab('settings',this)">
+    <div class="nb-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+    <div class="nb-lbl">設定</div>
+  </button>
+</nav>
+</div>
+
+<script>
+const qs=s=>document.querySelector(s);
+const MAX_Q=60;
+const S={records:[],settings:{deadline:'23:00',youtubeUrl:''},playing:false,showYT:false};
+
+document.addEventListener('DOMContentLoaded',async()=>{
+  setNowTime();
+  await loadSettings();
+  await loadRecords();
+});
+
+function setNowTime(){
+  const n=new Date();
+  const v=`${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
+  qs('#tInput').value=v; onTC(v);
+}
+
+async function api(path,opts={}){
+  try{const r=await fetch(path,{headers:{'Content-Type':'application/json'},...opts});return await r.json();}
+  catch(e){return{success:false,error:e.message};}
+}
+async function loadSettings(){
+  const d=await api('/api/settings');
+  if(d.success)S.settings=d.settings;
+  qs('#cfgDL').value=S.settings.deadline||'23:00';
+  qs('#cfgYt').value=S.settings.youtubeUrl||'';
+  if(S.settings.youtubeUrl)qs('#mnTitle').textContent=ytLabel(S.settings.youtubeUrl);
+}
+async function loadRecords(){
+  const d=await api('/api/records');
+  S.records=d.success?(d.records||[]):[];
+  if(!d.success)toast('⚠ 無法連接 Notion，請確認環境變數');
+  renderHome();renderHistory();
+}
+
+function toM(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
+function dlM(){return toM(S.settings.deadline||'23:00');}
+function todayStr(){return new Date().toISOString().split('T')[0];}
+function todayRec(){return S.records.find(r=>r.date===todayStr())||null;}
+function getTQ(excl=null){
+  const recs=excl?S.records.filter(r=>r.date!==excl):S.records;
+  return Math.max(0,recs.reduce((a,r)=>a+(r.earnedQuota||0),0)-recs.reduce((a,r)=>a+(r.usedQuota||0),0));
+}
+function getStreak(){
+  const s=[...S.records].sort((a,b)=>b.date.localeCompare(a.date));
+  let c=0;for(const r of s){if(r.onTime)c++;else break;}return c;
+}
+function fmtDate(ds){
+  const d=new Date(ds+'T00:00:00'),days=['日','一','二','三','四','五','六'];
+  return`${d.getMonth()+1}/${d.getDate()} (${days[d.getDay()]})`;
+}
+
+function renderHome(){
+  const tr=todayRec(),q=getTQ(tr?todayStr():null),streak=getStreak();
+  const onTC2=S.records.filter(r=>r.onTime).length;
+  const rate=S.records.length?Math.round(onTC2/S.records.length*100):0;
+  const dl=S.settings.deadline||'23:00',n=new Date();
+  qs('#heroQ').textContent=q;
+  qs('#heroTag').textContent=q>120?'存了不少！繼續保持 ✦':q>0?'有 quota 可以用喔':'快點早點回家賺 quota！';
+  qs('#chipStreak').querySelector('span').textContent=`${streak} 天連續`;
+  qs('#chipDL').querySelector('span').textContent=`截止 ${dl}`;
+  const tc=qs('#chipToday');
+  if(tr){
+    tc.className='chip '+(tr.onTime?'chip-ok':'chip-warn');
+    qs('#chipTodayTxt').textContent=`今日 ${tr.homeTime}`;
+    tc.querySelector('svg').innerHTML=tr.onTime?'<polyline points="20 6 9 17 4 12"/>':'<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>';
+  }else{tc.className='chip chip-none';qs('#chipTodayTxt').textContent='今日未記錄';}
+  qs('#rcDL').textContent=`截止 ${dl}`;
+  qs('#rcDate').textContent=`今天 ${n.getMonth()+1}/${n.getDate()}`;
+  qs('#stOnTime').innerHTML=`${onTC2}<span class="sc-unit">次</span>`;
+  qs('#stRate').innerHTML=`${rate}<span class="sc-unit">%</span>`;
+  onTC(qs('#tInput').value);
+}
+
+function renderHistory(){
+  const list=qs('#histList');
+  if(!S.records.length){
+    list.innerHTML='<div class="empty"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>還沒有記錄，今天開始吧！</div>';
+    return;
+  }
+  const sorted=[...S.records].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,60);
+  list.innerHTML=sorted.map((r,i)=>{
+    let col,dotSvg,rightTxt,rightCol;
+    if(r.onTime&&r.earnedQuota>0){col='var(--c-green)';dotSvg='<polyline points="20 6 9 17 4 12"/>';rightTxt=`+${r.earnedQuota} 分`;rightCol='color:var(--c-green)';}
+    else if(!r.onTime&&r.usedQuota>0){col='var(--c-yellow)';dotSvg='<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>';rightTxt=`-${r.usedQuota} quota`;rightCol='color:var(--c-peach)';}
+    else if(!r.onTime){col='var(--c-red)';dotSvg='<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>';rightTxt='超時';rightCol='color:var(--c-red)';}
+    else{col='var(--c-green)';dotSvg='<polyline points="20 6 9 17 4 12"/>';rightTxt='準時';rightCol='opacity:.45';}
+    return`<div class="hi" style="animation-delay:${i*16}ms;--hi-col:${col}">
+      <div class="hi-dot" style="background:${col}"><svg viewBox="0 0 24 24">${dotSvg}</svg></div>
+      <div class="hi-body"><div class="hi-date">${fmtDate(r.date)}</div><div class="hi-time">${r.homeTime}</div></div>
+      <div class="hi-right" style="${rightCol}">${rightTxt}</div>
+    </div>`;
+  }).join('');
+}
+
+function onTC(val){
+  const track=qs('#pvTrack'),fill=qs('#pvFill'),txt=qs('#pvTxt');
+  if(!val){track.style.display='none';txt.style.display='none';return;}
+  const m=toM(val),dl=dlM(),avail=getTQ(todayRec()?todayStr():null);
+  track.style.display='block';txt.style.display='block';
+  if(m<dl){
+    const e=dl-m,pct=Math.min(e/120*100,100);
+    fill.style.width=pct+'%';fill.style.background='#1A1A1A';
+    txt.textContent=`提早 ${e} 分鐘 → 賺 +${e} quota`;txt.style.color='#1A1A1A';txt.style.fontWeight='900';
+  }else if(m===dl){
+    fill.style.width='100%';fill.style.background='#1A1A1A';
+    txt.textContent='剛好準時 ✓';txt.style.color='#1A1A1A';txt.style.fontWeight='900';
+  }else{
+    const over=m-dl,use=Math.min(over,MAX_Q,avail),pct=Math.min(over/120*100,100);
+    fill.style.width=pct+'%';fill.style.background='#1A1A1A';
+    txt.textContent=use>0?`超時 ${over} 分 → 扣 ${use} quota（餘 ${avail} 分）`:`超時 ${over} 分 · quota 不足（現有 ${avail} 分）`;
+    txt.style.color='#1A1A1A';txt.style.fontWeight='900';
+  }
+}
+
+async function submitRecord(){
+  const val=qs('#tInput').value;if(!val){toast('請先選擇時間');return;}
+  const today=todayStr(),m=toM(val),dl=dlM(),avail=getTQ(todayRec()?today:null);
+  const earned=m<dl?dl-m:0,used=m>dl?Math.min(m-dl,MAX_Q,avail):0,onTime=m<=dl||used>0;
+  const fb=qs('#fb');
+  if(m<=dl){fb.className='feedback ok';fb.innerHTML=earned>0?`記錄 ${val} 到家，賺到 <strong>+${earned} 分 quota</strong>！`:`${val} 到家，剛好準時！`;}
+  else if(used>0){fb.className='feedback quota';fb.innerHTML=`${val} 到家，超時 ${m-dl} 分，<strong>扣 ${used} 分 quota</strong>。剩餘 ${avail-used} 分`;}
+  else{fb.className='feedback late';fb.innerHTML=`${val} 到家，超時了且 quota 不足（現有 ${avail} 分）`;}
+  const d=await api('/api/record',{method:'POST',body:JSON.stringify({date:today,homeTime:val})});
+  if(d.success){toast('已記錄到 Notion！');await loadRecords();}
+  else{
+    toast('⚠ '+(d.error||'Notion 連線失敗'));
+    const idx=S.records.findIndex(r=>r.date===today);
+    const rec={id:'local',date:today,homeTime:val,earnedQuota:earned,usedQuota:used,onTime};
+    if(idx>=0)S.records[idx]=rec;else S.records.push(rec);
+    renderHome();renderHistory();
+  }
+}
+
+async function saveSettings(){
+  const deadline=qs('#cfgDL').value||'23:00',youtubeUrl=qs('#cfgYt').value||'';
+  S.settings={deadline,youtubeUrl};
+  const d=await api('/api/settings',{method:'POST',body:JSON.stringify({deadline,youtubeUrl})});
+  if(d.success)toast('設定已儲存！');else toast('⚠ 設定儲存失敗');
+  qs('#mnTitle').textContent=ytLabel(youtubeUrl)||'點播放開始';
+  if(S.playing)qs('#yt-frame').src=toEmbed(youtubeUrl);
+  renderHome();
+}
+
+function toEmbed(u){
+  if(!u)return'';
+  if(u.includes('/embed/'))return u.includes('autoplay')?u:u+'?autoplay=1&loop=1';
+  const m=u.match(/(?:v=|youtu\.be\/|shorts\/)([a-zA-Z0-9_-]{11})/);
+  return m?`https://www.youtube.com/embed/${m[1]}?autoplay=1&loop=1&playlist=${m[1]}`:u;
+}
+function ytLabel(u){const m=u?.match(/(?:v=|youtu\.be\/|shorts\/)([a-zA-Z0-9_-]{11})/);return m?`YouTube · ${m[1]}`:u?.slice(0,28)||'';}
+function onYtInput(v){if(v)qs('#mnTitle').textContent=ytLabel(v)||'自訂音樂';}
+
+function togglePlay(){
+  S.playing=!S.playing;
+  const btn=qs('#btnPlay'),disc=qs('#disc'),frame=qs('#yt-frame');
+  if(S.playing){
+    btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>暫停`;
+    btn.classList.add('on');disc.classList.add('spin');
+    const url=S.settings.youtubeUrl||qs('#cfgYt').value;
+    frame.src=toEmbed(url);if(!S.showYT)frame.style.display='none';
+  }else{
+    btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round"><polygon points="5 3 19 12 5 21 5 3"/></svg>播放`;
+    btn.classList.remove('on');disc.classList.remove('spin');frame.src='';frame.style.display='';
+  }
+}
+function toggleYT(){
+  S.showYT=!S.showYT;
+  const frame=qs('#yt-frame'),btn=qs('#btnShow');
+  if(S.showYT){frame.classList.add('open');frame.style.display='';btn.classList.add('on');btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>隱藏`;}
+  else{frame.classList.remove('open');btn.classList.remove('on');btn.innerHTML=`<svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>顯示`;}
+}
+
+function switchTab(name,el){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  qs('#sec-'+name).classList.add('on');
+  const btn=el||qs(`[data-sec=${name}]`);if(btn)btn.classList.add('active');
+  qs('#sa').scrollTop=0;
+}
+
+let tt;
+function toast(msg){
+  const el=qs('#toast');el.textContent=msg;el.classList.add('on');
+  clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('on'),2800);
+}
+</script>
+</body>
+</html>
