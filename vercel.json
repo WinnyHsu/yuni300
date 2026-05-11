@@ -5,6 +5,6 @@
     { "source": "/api/record",   "destination": "/api/record.js" },
     { "source": "/api/settings", "destination": "/api/settings.js" },
     { "source": "/api/status",   "destination": "/api/status.js" },
-    { "source": "/(.*)",         "destination": "/public/index.html" }
+    { "source": "/(.*)",         "destination": "/index.html" }
   ]
 }
