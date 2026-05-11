@@ -1,14 +1,15 @@
 {
-  "name": "yunei-300days",
-  "version": "3.0.0",
-  "description": "宇倪三百天 - 回家時間追蹤器",
+  "name": "yuni300",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
-    "dev": "vercel dev"
+    "build": "echo \"No build needed\""
   },
   "dependencies": {
-    "@notionhq/client": "^2.2.14"
+    "@notionhq/client": "^2.2.14",
+    "dotenv": "^16.3.1"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "20.x"
   }
 }
