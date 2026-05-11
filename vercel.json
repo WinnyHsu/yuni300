@@ -1,7 +1,10 @@
 {
   "version": 2,
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1.js" },
-    { "src": "/(.*)",     "dest": "/public/index.html" }
+  "rewrites": [
+    { "source": "/api/records",  "destination": "/api/records.js" },
+    { "source": "/api/record",   "destination": "/api/record.js" },
+    { "source": "/api/settings", "destination": "/api/settings.js" },
+    { "source": "/api/status",   "destination": "/api/status.js" },
+    { "source": "/(.*)",         "destination": "/public/index.html" }
   ]
 }
